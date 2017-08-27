@@ -13,16 +13,21 @@ export async function fetchTags() {
 }
 
 export async function fetchList() {
-  const res = await fetchInoreader('/subscription/list')
-  const { subscriptions } = await res.json()
-  return subscriptions
+  const res = await fetchInoreader('/subscription/list');
+  const { subscriptions } = await res.json();
+  return subscriptions;
 }
 
-export async function fetchItem(id) {
-  const res = await fetchInoreader(`/stream/contents/${id}`)
-  const { items } = await res.json()
+export async function fetchItem(id, c) {
+  console.log('fetch', id, c);
+  const query = c ? `?c=${c}` : '';
+  const res = await fetchInoreader(`/stream/contents/${id}${query}`);
+  const { continuation, items } = await res.json();
   items.forEach(item => {
-    item.summary.content = item.summary.content.replace(/^[\w\W]*?<\/center>/, '')
-  })
-  return items
+    item.summary.content = item.summary.content.replace(/^[\w\W]*?<\/center>/, '');
+  });
+  return {
+    continuation,
+    items,
+  };
 }

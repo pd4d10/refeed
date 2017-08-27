@@ -17,9 +17,6 @@ export default class List extends Component {
             img: {
               width: '100%',
             },
-            p: {
-              lineHeight: 24,
-            }
           }}
         />
       </ScrollView>
