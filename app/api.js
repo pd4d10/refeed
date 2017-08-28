@@ -15,7 +15,29 @@ export async function fetchTags() {
 export async function fetchList() {
   const res = await fetchInoreader('/subscription/list?fs=48');
   const { subscriptions } = await res.json();
-  return subscriptions;
+  const folders = {};
+  const allCategories = {};
+
+  for (const subscription of subscriptions) {
+    const categories = subscription.categories.filter(c => /\/label\/.*$/.test(c.id));
+    for (const category of categories) {
+      if (!allCategories[category.id]) {
+        allCategories[category.id] = category;
+      }
+
+      if (folders[category.id]) {
+        folders[category.id].push(subscription);
+      } else {
+        folders[category.id] = [subscription];
+      }
+    }
+  }
+  return Object.keys(folders).map(id => ({
+    id,
+    label: allCategories[id].label,
+    isOpen: false,
+    subscriptions: folders[id],
+  }));
 }
 
 export async function fetchItem(id, c) {
@@ -47,6 +69,6 @@ export async function markAsRead(id) {
     //   r: 'user/-/state/com.google/read',
     // }),
   });
-  const text = await res.text()
-  return text
+  const text = await res.text();
+  return text;
 }
