@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator, Text, FlatList, TouchableOpacity } from 'react-native';
 import HTMLView from 'react-native-htmlview';
-import { fetchItem } from './api';
+import { fetchItem, markAsRead } from './api';
 
 export default class List extends Component {
   state = {
@@ -12,6 +12,10 @@ export default class List extends Component {
 
   static navigationOptions = ({ navigation }) => ({
     title: navigation.state.params.title,
+    headerStyle: {
+      backgroundColor: '#569cd6',
+    },
+    headerTintColor: '#fff',
   });
 
   async componentDidMount() {
@@ -20,18 +24,40 @@ export default class List extends Component {
 
   _keyExtractor = (item, index) => item.id;
 
-  _renderItem = ({ item }) =>
+  _renderItem = ({ item, index }) =>
     <TouchableOpacity
-      onPress={() =>
+      onPress={async () => {
         this.props.navigation.navigate('Detail', {
           title: item.title,
-          content: item.summary.content,
-        })}
+          content: item.content,
+        });
+
+        // Mark as read
+        const json = await markAsRead(item.id)
+        this.setState({
+          items: [
+            ...this.state.items.slice(0, index),
+            {
+              ...this.state.items[index],
+              read: true
+            },
+            ...this.state.items.slice(index + 1),
+          ]
+        })
+      }}
     >
       <View style={{ margin: 10 }}>
-        <Text>
+        <Text style={{ fontWeight: 'bold', fontSize: 16, color: item.read ? '#aaa' : '#000' }}>
           {item.title}
         </Text>
+        <View style={{ justifyContent: 'space-between' }}>
+          <Text style={{ flex: 1, fontSize: 12, color: '#aaa' }}>
+            {item.originTitle}
+          </Text>
+          <Text style={{ flex: 1, fontSize: 12, color: '#aaa' }}>
+            {item.publishTime}
+          </Text>
+        </View>
       </View>
     </TouchableOpacity>;
 
@@ -77,13 +103,13 @@ export default class List extends Component {
 
   _renderFooter = () => {
     if (this.state.isLoadingMore) {
-      return <ActivityIndicator />
+      return <ActivityIndicator />;
     } else if (this.state.isEnd) {
-      return <Text>No more</Text>
+      return <Text>No more</Text>;
     } else {
-      return null
+      return null;
     }
-  }
+  };
 
   render() {
     const { isLoaded, continuation, isLoadingMore, items, isEnd } = this.state;

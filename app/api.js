@@ -3,7 +3,7 @@ import { AppKey, Authorization, AppId } from './config';
 const fetchInoreader = (url, options) =>
   fetch('https://www.inoreader.com/reader/api/0' + url, {
     ...options,
-    headers: { AppKey, Authorization, AppId },
+    headers: { ...((options && options.headers) || {}), AppKey, Authorization, AppId },
   });
 
 export async function fetchTags() {
@@ -19,15 +19,34 @@ export async function fetchList() {
 }
 
 export async function fetchItem(id, c) {
-  console.log('fetch', id, c);
   const query = c ? `?c=${c}` : '';
   const res = await fetchInoreader(`/stream/contents/${id}${query}`);
   const { continuation, items } = await res.json();
-  items.forEach(item => {
-    item.summary.content = item.summary.content.replace(/^[\w\W]*?<\/center>/, '');
-  });
   return {
     continuation,
-    items,
+    items: items.map(item => ({
+      id: item.id,
+      title: item.title,
+      originTitle: item.origin.title,
+      publishTime: item.published,
+      content: item.summary.content.replace(/^[\w\W]*?<\/center>/, ''),
+      read: item.categories.some(c => /\/state\/com.google\/read$/.test(c)),
+      starred: item.categories.some(c => /\/state\/com.google\/starred$/.test(c)),
+    })),
   };
+}
+
+export async function markAsRead(id) {
+  const res = await fetchInoreader(`/edit-tag?i=${id}&a=user/-/state/com.google/read`, {
+    // headers: {
+    //   'Content-Type': 'application/json',
+    // },
+    method: 'POST',
+    // body: JSON.stringify({
+    //   i: id,
+    //   r: 'user/-/state/com.google/read',
+    // }),
+  });
+  const text = await res.text()
+  return text
 }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, StatusBar, ScrollView, Text, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { fetchList } from './api';
 
 export default class Home extends Component {
@@ -16,6 +17,8 @@ export default class Home extends Component {
     // headerTitleStyle: {
     //   color: '#fff'
     // }
+    tabBarLabel: 'All',
+    tabBarIcon: ({ tintColor }) => <Icon name="feed" size={16} style={{ color: tintColor }} />,
   };
 
   async componentDidMount() {
