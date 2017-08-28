@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, Text, FlatList } from 'react-native';
 import HTMLView from 'react-native-htmlview';
-import { fetchItem } from './api';
+import { fetchItem } from '../api';
 
 export default class Detail extends Component {
   static navigationOptions = ({ navigation }) => ({

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 
 export default class Settings extends Component {
@@ -10,6 +10,10 @@ export default class Settings extends Component {
   };
 
   render() {
-    return <View />;
+    return (
+      <ScrollView>
+        <View />
+      </ScrollView>
+    );
   }
 }

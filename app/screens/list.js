@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator, Text, FlatList, TouchableOpacity } from 'react-native';
 import HTMLView from 'react-native-htmlview';
-import { fetchItem, markAsRead } from './api';
+import { fetchItem, markAsRead } from '../api';
 
 export default class List extends Component {
   state = {

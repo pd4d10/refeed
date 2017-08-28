@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { StackNavigator, TabNavigator } from 'react-navigation';
-import Home from './home';
-import List from './list';
-import Detail from './detail';
-import Settings from './settings'
+import Home from './screens/home';
+import List from './screens/list';
+import Detail from './screens/detail';
+import Settings from './screens/settings'
 
 export default StackNavigator({
   Home: {

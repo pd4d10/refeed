@@ -13,7 +13,7 @@ export async function fetchTags() {
 }
 
 export async function fetchList() {
-  const res = await fetchInoreader('/subscription/list');
+  const res = await fetchInoreader('/subscription/list?fs=48');
   const { subscriptions } = await res.json();
   return subscriptions;
 }
