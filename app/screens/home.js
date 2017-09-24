@@ -30,6 +30,7 @@ export default class Home extends Component {
 
   async componentDidMount() {
     const list = await fetchList();
+    console.log(list)
     this.setState({
       list,
       isLoaded: true,
@@ -42,7 +43,12 @@ export default class Home extends Component {
     <View>
       <TouchableOpacity
         onPress={() => {
-          this.setState({ list: this.state.list.map(item => ({ ...item, isOpen: !item.isOpen })) });
+          this.setState({
+            list: this.state.list.map(it => ({
+              ...it,
+              isOpen: item.id === it.id ? !it.isOpen : it.isOpen,
+            })),
+          });
         }}
         key={item.label}
       >
@@ -76,11 +82,8 @@ export default class Home extends Component {
       key={item.id}
     >
       <View style={{ margin: 10, flexDirection: 'row' }}>
-        <Image
-          source={{ uri: item.iconUrl }}
-          style={{ width: 16, height: 16, marginRight: 4 }}
-        />
-        {/* <Text>{item.title.slice(0, 1)}</Text> */}
+        <Image source={{ uri: item.iconUrl }} style={{ width: 16, height: 16, marginRight: 4 }} />
+        {/* <Text>{item.title}</Text> */}
       </View>
     </TouchableOpacity>
   );
