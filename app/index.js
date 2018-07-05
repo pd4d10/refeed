@@ -9,23 +9,39 @@ import Detail from './screens/detail'
 import Settings from './screens/settings'
 import Auth from './auth'
 
-export default StackNavigator(
+const AccountsScreen = StackNavigator(
   {
-    Accounts: {
-      screen: Accounts,
-    },
-    Starred: {
-      screen: Starred,
-    },
-    Settings: {
-      screen: Settings,
-    },
-    List: { screen: List },
-    Detail: { screen: Detail },
-    Add: { screen: Add },
-    Auth: { screen: Auth },
+    accounts: { screen: Accounts },
+    add: { screen: Add },
   },
   {
+    mode: 'modal',
+  }
+)
+
+export default StackNavigator(
+  {
+    accounts: {
+      screen: AccountsScreen,
+    },
+    starred: {
+      screen: Starred,
+    },
+    settings: {
+      screen: Settings,
+    },
+    list: { screen: List },
+    detail: { screen: Detail },
+    // add: {
+    //   screen: Add,
+    //   navigationOptions: {
+    //     // header: null,
+    //   },
+    // },
+    auth: { screen: Auth },
+  },
+  {
+    headerMode: 'none',
     uriPrefix: 'refeed',
   }
 )

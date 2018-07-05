@@ -9,7 +9,7 @@ export default class Add extends Component {
         <Button
           title="Inoreader"
           onPress={() => {
-            this.props.navigation.navigate('Auth')
+            this.props.navigation.navigate('auth')
           }}
         />
       </View>

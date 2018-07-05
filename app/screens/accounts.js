@@ -10,7 +10,7 @@ export default class Accounts extends Component {
         {/* <MaterialIcons name="add" size={16} /> */}
         <Button
           onPress={() => {
-            navigation.navigate('Add')
+            navigation.navigate('add')
           }}
           title="Add"
         />

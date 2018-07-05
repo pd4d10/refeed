@@ -17,18 +17,19 @@ export default class InoreaderAuth extends Component {
 
   render() {
     const CLIENT_ID = config.clientId
-    const REDIRECT_URI = encodeURIComponent('refeed://welcome')
-    const OPTIONAL_SCOPES = encodeURIComponent('read write')
+    const REDIRECT_URI = encodeURIComponent('refeed://list')
+    // const REDIRECT_URI = encodeURIComponent('https://www.baidu.com')
+    const OPTIONAL_SCOPES = encodeURIComponent('read')
     const CSRF_PROTECTION_STRING = 'aaa'
+
+    const uri = `https://www.inoreader.com/oauth2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${OPTIONAL_SCOPES}&state=${CSRF_PROTECTION_STRING}`
 
     return (
       <WebView
-        source={{
-          uri: `https://www.inoreader.com/oauth2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${OPTIONAL_SCOPES}&state=${CSRF_PROTECTION_STRING}`,
-        }}
-        onLoadStart={console.log}
-        onLoadEnd={console.log}
-        onLoad={console.log}
+        source={{ uri }}
+        onLoadStart={() => console.log('start')}
+        onLoadEnd={() => console.log('end')}
+        onLoad={() => console.log('load')}
       />
     )
   }
